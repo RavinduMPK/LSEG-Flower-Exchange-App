@@ -72,10 +72,10 @@ void addToTable(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable, const CSVRo
 }
 
 void writeLineToOutputCSV(const CSVRow& row) {
-    std::ofstream csvFile("output.csv", std::ios_base::app);
+    std::ofstream csvFile("execution_rep.csv", std::ios_base::app);
 
     if (!csvFile.is_open()) {
-        std::cerr << "Error opening output.csv file." << std::endl;
+        std::cerr << "Error opening execution_rep.csv file." << std::endl;
         return;
     }
 
@@ -213,13 +213,13 @@ void matchOrders(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable) {
 }
 
 int main() {
-    string filename = "example_10.csv";
+    string filename = "orders.csv";
     vector<CSVRow> csvData = readCSV(filename);
 
     vector<CSVRow> buyTable;
     vector<CSVRow> sellTable;
 
-    std::ofstream csvFile("output.csv");
+    std::ofstream csvFile("execution_rep.csv");
 
     if (!csvFile.is_open()) {
         std::cerr << "Error opening file." << std::endl;

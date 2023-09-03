@@ -76,7 +76,7 @@ void addToTable(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable, const CSVRo
 
 // Function to write a row to the output.csv file
 void writeLineToOutputCSV(const CSVRow& row) {
-    std::ofstream csvFile("output.csv", std::ios_base::app); // Open in append mode
+    std::ofstream csvFile("execution_rep.csv", std::ios_base::app); // Open in append mode
 
     if (!csvFile.is_open()) {
         std::cerr << "Error opening output.csv file." << std::endl;
@@ -152,14 +152,14 @@ bool validateOrder(CSVRow& row) {
 
 
 int main() {
-    string filename = "example_6.csv"; // Change this to your .csv file's path
+    string filename = "orders.csv"; // Change this to your .csv file's path (Input)
     vector<CSVRow> csvData = readCSV(filename);
 
     vector<CSVRow> buyTable;  // For column 3 value 1
     vector<CSVRow> sellTable; // For column 3 value 2
 
     // Create and open the .csv file
-    std::ofstream csvFile("output.csv");
+    std::ofstream csvFile("execution_rep.csv");
 
     // Check if the file is open
     if (!csvFile.is_open()) {
