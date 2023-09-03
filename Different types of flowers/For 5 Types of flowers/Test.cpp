@@ -126,7 +126,7 @@ bool validateOrder(CSVRow& row) {
     return true;
 }
 
-void matchOrders(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable) {
+void matchOrders(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable, int indicator) {
     for (auto buyRow = buyTable.begin(); buyRow != buyTable.end();) {
         if (buyRow->newColumn != "New" && buyRow->newColumn != "PFill") {
             ++buyRow;
@@ -139,60 +139,120 @@ void matchOrders(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable) {
                 continue;
             }
 
-            if (buyRow->column2 == sellRow->column2) {
-                if (stoi(sellRow->column5) <= stoi(buyRow->column5)) {
-                    if (stoi(sellRow->column4) > stoi(buyRow->column4)) {
-                        buyRow->newColumn = "Fill";
+            if (indicator == 2) {
+                if (buyRow->column2 == sellRow->column2) {
+                    if (stoi(sellRow->column5) <= stoi(buyRow->column5)) {
+                        if (stoi(sellRow->column4) > stoi(buyRow->column4)) {
+                            buyRow->newColumn = "Fill";
 
-                        CSVRow newSellRow;
-                        newSellRow.ord = sellRow->ord;
-                        newSellRow.column1 = sellRow->column1;
-                        newSellRow.column2 = sellRow->column2;
-                        newSellRow.column3 = sellRow->column3;
-                        newSellRow.newColumn = "PFill";
-                        newSellRow.column4 = buyRow->column4;
-                        newSellRow.column5 = buyRow->column5;
+                            CSVRow newSellRow;
+                            newSellRow.ord = sellRow->ord;
+                            newSellRow.column1 = sellRow->column1;
+                            newSellRow.column2 = sellRow->column2;
+                            newSellRow.column3 = sellRow->column3;
+                            newSellRow.newColumn = "PFill";
+                            newSellRow.column4 = buyRow->column4;
+                            newSellRow.column5 = buyRow->column5;
 
-                        sellRow->column4 = to_string(stoi(sellRow->column4) - stoi(buyRow->column4));
-                        sellRow->newColumn = "PFill";
+                            sellRow->column4 = to_string(stoi(sellRow->column4) - stoi(buyRow->column4));
+                            sellRow->newColumn = "PFill";
 
-                        writeLineToOutputCSV(newSellRow);
-                        writeLineToOutputCSV(*buyRow);
-                        ++sellRow;
-                    }
-                    else if (stoi(sellRow->column4) == stoi(buyRow->column4)) {
-                        buyRow->newColumn = "Fill";
-                        sellRow->newColumn = "Fill";
+                            writeLineToOutputCSV(newSellRow);
+                            writeLineToOutputCSV(*buyRow);
+                            ++sellRow;
+                        }
+                        else if (stoi(sellRow->column4) == stoi(buyRow->column4)) {
+                            buyRow->newColumn = "Fill";
+                            sellRow->newColumn = "Fill";
 
-                        sellRow->column5 = buyRow->column5;
+                            sellRow->column5 = buyRow->column5;
 
-                        writeLineToOutputCSV(*sellRow);
-                        writeLineToOutputCSV(*buyRow);
-                        ++sellRow;
-                    }
-                    else {
-                        sellRow->newColumn = "Fill";
+                            writeLineToOutputCSV(*sellRow);
+                            writeLineToOutputCSV(*buyRow);
+                            ++sellRow;
+                        }
+                        else {
+                            sellRow->newColumn = "Fill";
 
-                        CSVRow newBuyRow;
-                        newBuyRow.ord = buyRow->ord;
-                        newBuyRow.column1 = buyRow->column1;
-                        newBuyRow.column2 = buyRow->column2;
-                        newBuyRow.column3 = buyRow->column3;
-                        newBuyRow.newColumn = "PFill";
-                        newBuyRow.column4 = sellRow->column4;
-                        newBuyRow.column5 = buyRow->column5;
+                            CSVRow newBuyRow;
+                            newBuyRow.ord = buyRow->ord;
+                            newBuyRow.column1 = buyRow->column1;
+                            newBuyRow.column2 = buyRow->column2;
+                            newBuyRow.column3 = buyRow->column3;
+                            newBuyRow.newColumn = "PFill";
+                            newBuyRow.column4 = sellRow->column4;
+                            newBuyRow.column5 = buyRow->column5;
 
-                        buyRow->column4 = to_string(stoi(buyRow->column4) - stoi(sellRow->column4));
-                        buyRow->newColumn = "PFill";
+                            buyRow->column4 = to_string(stoi(buyRow->column4) - stoi(sellRow->column4));
+                            buyRow->newColumn = "PFill";
 
-                        writeLineToOutputCSV(newBuyRow);
-                        writeLineToOutputCSV(*sellRow);
-                        ++sellRow;
+                            writeLineToOutputCSV(newBuyRow);
+                            writeLineToOutputCSV(*sellRow);
+                            ++sellRow;
+                        }
                     }
                 }
+                else {
+                    ++sellRow;
+                }
             }
-            else {
-                ++sellRow;
+
+            else if (indicator == 1) {
+                if (buyRow->column2 == sellRow->column2) {
+                    if (stoi(sellRow->column5) <= stoi(buyRow->column5)) {
+                        if (stoi(sellRow->column4) > stoi(buyRow->column4)) {
+                            sellRow->newColumn = "Fill";
+
+                            CSVRow newBuyRow;
+                            newBuyRow.ord = sellRow->ord;
+                            newBuyRow.column1 = buyRow->column1;
+                            newBuyRow.column2 = buyRow->column2;
+                            newBuyRow.column3 = buyRow->column3;
+                            newBuyRow.newColumn = "PFill";
+                            newBuyRow.column4 = sellRow->column4;
+                            newBuyRow.column5 = sellRow->column5;
+
+                            buyRow->column4 = to_string(stoi(buyRow->column4) - stoi(sellRow->column4));
+                            buyRow->newColumn = "PFill";
+
+                            writeLineToOutputCSV(newBuyRow);
+                            writeLineToOutputCSV(*sellRow);
+                            ++sellRow;
+                        }
+                        else if (stoi(buyRow->column4) == stoi(sellRow->column4)) {
+                            sellRow->newColumn = "Fill";
+                            buyRow->newColumn = "Fill";
+
+                            buyRow->column5 = sellRow->column5;
+
+                            writeLineToOutputCSV(*buyRow);
+                            writeLineToOutputCSV(*sellRow);
+                            ++sellRow; //check
+                        }
+                        else {
+                            buyRow->newColumn = "Fill";
+
+                            CSVRow newSellRow;
+                            newSellRow.ord = sellRow->ord;
+                            newSellRow.column1 = sellRow->column1;
+                            newSellRow.column2 = sellRow->column2;
+                            newSellRow.column3 = sellRow->column3;
+                            newSellRow.newColumn = "PFill";
+                            newSellRow.column4 = buyRow->column4;
+                            newSellRow.column5 = sellRow->column5;
+
+                            sellRow->column4 = to_string(stoi(sellRow->column4) - stoi(buyRow->column4));
+                            sellRow->newColumn = "PFill";
+
+                            writeLineToOutputCSV(newSellRow);
+                            writeLineToOutputCSV(*buyRow);
+                            ++sellRow;
+                        }
+                    }
+                }
+                else {
+                    ++sellRow;
+                }
             }
         }
 
@@ -243,7 +303,12 @@ int main() {
             continue;
         }
         else {
-            matchOrders(buyTable, sellTable);
+            const CSVRow& lastRow = row;
+            int indicator = stoi(lastRow.column3);
+            //cout << indicator << "\n";
+
+
+            matchOrders(buyTable, sellTable, indicator);
         }
     }
 
