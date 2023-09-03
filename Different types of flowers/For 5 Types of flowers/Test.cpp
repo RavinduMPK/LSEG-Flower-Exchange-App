@@ -191,6 +191,16 @@ void matchOrders(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable, int indica
                             ++sellRow;
                         }
                     }
+
+                    else {
+                        if (sellRow->newColumn == "New") {
+                            writeLineToOutputCSV(*sellRow);
+                            break;
+                        }
+                        else {
+                            break;
+                        }
+                    }
                 }
                 else {
                     ++sellRow;
@@ -200,11 +210,11 @@ void matchOrders(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable, int indica
             else if (indicator == 1) {
                 if (buyRow->column2 == sellRow->column2) {
                     if (stoi(sellRow->column5) <= stoi(buyRow->column5)) {
-                        if (stoi(sellRow->column4) > stoi(buyRow->column4)) {
+                        if (stoi(buyRow->column4) > stoi(sellRow->column4)) {
                             sellRow->newColumn = "Fill";
 
                             CSVRow newBuyRow;
-                            newBuyRow.ord = sellRow->ord;
+                            newBuyRow.ord = buyRow->ord;
                             newBuyRow.column1 = buyRow->column1;
                             newBuyRow.column2 = buyRow->column2;
                             newBuyRow.column3 = buyRow->column3;
@@ -247,6 +257,15 @@ void matchOrders(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable, int indica
                             writeLineToOutputCSV(newSellRow);
                             writeLineToOutputCSV(*buyRow);
                             ++sellRow;
+                        }
+                    }
+                    else {
+                        if (buyRow->newColumn == "New") {
+                            writeLineToOutputCSV(*buyRow);
+                            break;
+                        }
+                        else {
+                            break;
                         }
                     }
                 }
@@ -303,6 +322,18 @@ int main() {
             continue;
         }
         else {
+
+            // Sort buy table in Descending order based on integer conversion of column5
+            sort(buyTable.begin(), buyTable.end(), [](const CSVRow& a, const CSVRow& b) {
+                return stoi(a.column5) > stoi(b.column5); // Descending order
+                });
+
+
+            // Sort sell table in Ascending order based on integer conversion of column5
+            sort(sellTable.begin(), sellTable.end(), [](const CSVRow& a, const CSVRow& b) {
+                return stoi(a.column5) < stoi(b.column5); // Ascending order
+                });
+
             const CSVRow& lastRow = row;
             int indicator = stoi(lastRow.column3);
             //cout << indicator << "\n";
