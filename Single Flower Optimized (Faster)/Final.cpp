@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cctype>
 #include <set>
+#include <chrono> // Include for measuring execution time
 
 using namespace std;
 
@@ -284,6 +285,23 @@ void matchOrders(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable, int indica
         sellTable.end());
 }
 
+void writeExecutionTimeToOutputCSV(long long executionTime) {
+    std::ofstream csvFile("execution_rep.csv", std::ios_base::app); // Open in append mode
+
+    if (!csvFile.is_open()) {
+        std::cerr << "Error opening execution_rep.csv file." << std::endl;
+        return;
+    }
+
+    // Write the execution time to output.csv
+    csvFile << ".........................................................." << endl;
+    csvFile << "Execution Time (microseconds): " << executionTime << std::endl;
+
+    // Close the output.csv file
+    csvFile.close();
+}
+
+
 int main() {
     string filename = "orders.csv";
     vector<CSVRow> csvData = readCSV(filename);
@@ -298,7 +316,10 @@ int main() {
         return 1;
     }
 
-    csvFile << "Order ID,Client Order,Instrument, Side, Exec Status, Quantity, Price" << std::endl;
+    //csvFile << "Order ID,Client Order,Instrument, Side, Exec Status, Quantity, Price" << std::endl;
+
+    // Measure the start time
+    auto start = std::chrono::high_resolution_clock::now();
 
     for (const CSVRow& row : csvData) {
         bool isValid = validateOrder(const_cast<CSVRow&>(row));
@@ -335,6 +356,16 @@ int main() {
             matchOrders(buyTable, sellTable, indicator);
         }
     }
+
+    
+    // Measure the end time
+    auto end = std::chrono::high_resolution_clock::now();
+
+    // Calculate the execution time in milliseconds
+    auto executionTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+
+    // Write the execution time to the output CSV
+    writeExecutionTimeToOutputCSV(executionTime);
 
     csvFile.close();
 

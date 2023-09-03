@@ -6,6 +6,7 @@
 #include <algorithm> // Include this for sorting
 #include <cctype>    // Include this for isspace function
 #include <set> // Include this for std::set
+#include <chrono>
 
 using namespace std;
 
@@ -149,6 +150,20 @@ bool validateOrder(CSVRow& row) {
     return true;
 }
 
+void writeExecutionTimeToOutputCSV(long long executionTime) {
+    std::ofstream csvFile("execution_rep.csv", std::ios_base::app); // Open in append mode
+
+    if (!csvFile.is_open()) {
+        std::cerr << "Error opening execution_rep.csv file." << std::endl;
+        return;
+    }
+
+    // Write the execution time to output.csv
+    csvFile << "Execution Time (ms)," << executionTime << std::endl;
+
+    // Close the output.csv file
+    csvFile.close();
+}
 
 
 int main() {
@@ -168,7 +183,8 @@ int main() {
     }
 
     // Write header row
-    csvFile << "Order ID,Client Order,Instrument, Side, Exec Status, Quantity, Price" << std::endl;
+    //csvFile << "Order ID,Client Order,Instrument, Side, Exec Status, Quantity, Price" << std::endl;
+
 
     for (const CSVRow& row : csvData) {
 
@@ -448,7 +464,9 @@ int main() {
                 }
             }
         }
+
     }
+    
 
     // Close the file
     csvFile.close();
@@ -466,5 +484,8 @@ int main() {
     }
     
     */
+
+    
+
     return 0;
 }
