@@ -1,0 +1,7 @@
+Order ID,Client Order,Instrument, Side, Exec Status, Quantity, Price
+ord1,aa17,Lavender,1,New, 50, 30.00
+ord2,aa18,Rose,1,New, 500, 35.00
+ord2,aa18,Rose,1,PFill, 300, 35.00
+ord3,aa19,Rose,2,Fill, 300, 30.00
+ord4,aa20,Lavender,2,PFill, 50, 30.00
+ord1,aa17,Lavender,1,Fill, 50, 30.00
