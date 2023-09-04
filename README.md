@@ -43,8 +43,8 @@ But in the execution report (execution_rep.csv file) I have added header and I h
 
 ## Contributors
 
-- Ravindu Pushpakumara: [RavinduMPK][https://github.com/RavinduMPK]
-- Umesha Tilakarathna: [Umesha-Tilakarathna][https://github.com/Umesha-Tilakarathna]
+- Ravindu Pushpakumara: [**_RavinduMPK_**] [https://github.com/RavinduMPK]
+- Umesha Tilakarathna: [**_Umesha-Tilakarathna_**] [https://github.com/Umesha-Tilakarathna]
 
 
 
