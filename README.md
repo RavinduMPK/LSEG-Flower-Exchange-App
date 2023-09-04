@@ -44,7 +44,7 @@ But in the execution report (execution_rep.csv file) I have added header and I h
 ## Contributors
 
 - Ravindu Pushpakumara: [RavinduMPK]([https://github.com/RavinduMPK])
-- Umesha Tilakarathna: [Umesha-Tilakarathna][(https://github.com/Umesha-Tilakarathna)]
+- Umesha Tilakarathna: [Umesha-Tilakarathna]([https://github.com/Umesha-Tilakarathna])
 
 
 
