@@ -2,7 +2,7 @@
 
 ## Flower Exchange - Group Project
 
-This project is part of the C++ Workshop Series for University of Moratuwa organized by London Stock Exchange Group (LSEG).
+This project is part of the C++ Workshop Series for University of Moratuwa organized by **_London Stock Exchange Group (LSEG)_**.
 
 ## Project Description
 
