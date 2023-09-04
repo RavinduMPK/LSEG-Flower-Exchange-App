@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <cctype>
 #include <set>
-#include <chrono> // Include for measuring execution time
+#include <chrono>
 
 using namespace std;
 
@@ -173,6 +173,7 @@ void matchOrders(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable, int indica
                         }
                         else {
                             sellRow->newColumn = "Fill";
+                            sellRow->column5 = buyRow->column5;
 
                             CSVRow newBuyRow;
                             newBuyRow.ord = buyRow->ord;
@@ -186,8 +187,8 @@ void matchOrders(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable, int indica
                             buyRow->column4 = to_string(stoi(buyRow->column4) - stoi(sellRow->column4));
                             buyRow->newColumn = "PFill";
 
-                            writeLineToOutputCSV(newBuyRow);
                             writeLineToOutputCSV(*sellRow);
+                            writeLineToOutputCSV(newBuyRow);
                             ++sellRow;
                         }
                     }
@@ -238,6 +239,7 @@ void matchOrders(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable, int indica
                         }
                         else {
                             buyRow->newColumn = "Fill";
+                            buyRow->column5 = sellRow->column5;
 
                             CSVRow newSellRow;
                             newSellRow.ord = sellRow->ord;
@@ -251,8 +253,8 @@ void matchOrders(vector<CSVRow>& buyTable, vector<CSVRow>& sellTable, int indica
                             sellRow->column4 = to_string(stoi(sellRow->column4) - stoi(buyRow->column4));
                             sellRow->newColumn = "PFill";
 
-                            writeLineToOutputCSV(newSellRow);
                             writeLineToOutputCSV(*buyRow);
+                            writeLineToOutputCSV(newSellRow); 
                             ++sellRow;
                         }
                     }
@@ -357,7 +359,6 @@ int main() {
         }
     }
 
-    
     // Measure the end time
     auto end = std::chrono::high_resolution_clock::now();
 
